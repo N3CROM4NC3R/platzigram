@@ -29,7 +29,8 @@ urlpatterns = [
     path('sort_numbers',local_views.sort_numbers),
     path('helloworld/',local_views.hello_world),
     path('', admin.site.urls),
-    path('admin/', admin.site.urls),
     path('register/<str:name>/<int:age>/',local_views.register),
     path('posts/',posts_views.list_posts),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+print(urlpatterns[5])
