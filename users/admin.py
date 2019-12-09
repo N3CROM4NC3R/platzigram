@@ -61,6 +61,7 @@ class ProfileInline(admin.StackedInline):
     verbose_name_plural = 'profiles'
 
 class UserAdmin(BaseUserAdmin):
+
     """ Add profile admin to base user admin. """
 
     inlines = (ProfileInline,)

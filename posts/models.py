@@ -9,13 +9,9 @@ from users.models import Profile
 
 class Post(models.Model):
     """ Post model. """
-    user = models.ForeignKey(
-        User,
-        on_delete = models.CASCADE,
-    )
 
     profile = models.ForeignKey(
-        Profile,
+        'users.Profile',
         on_delete = models.CASCADE,
     )
 
@@ -29,5 +25,8 @@ class Post(models.Model):
         """ Return title and username. """
         return "{title} by @{username}".format(
             title=self.title,
-            username=self.user.username,
+            username=self.profile.user.username,
         )
+
+    def username(self):
+        return self.profile.user

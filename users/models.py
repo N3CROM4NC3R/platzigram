@@ -26,6 +26,6 @@ class Profile(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    def __string__(self):
+    def __str__(self):
         """ Return the username """
         return self.user.username
