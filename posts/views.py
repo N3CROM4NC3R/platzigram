@@ -1,8 +1,11 @@
 """ Posts views """
 # Django
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.db import models
+#Local
+from users.models import Profile
 
-#utilities
+# Utilities
 from datetime import datetime
 # Create your views here.
 
@@ -38,8 +41,13 @@ posts = [
         'timestamp':datetime.now().strftime('%b %dth, %Y - %H:%M'),
 
     }
-
 ]
 
 def list_posts(request):
-    return render(request,'feed.html',{'posts':posts})
+    user = request.user
+    profile = Profile.objects.get(user_id = user.id )
+    if profile:
+        print(profile.picture)
+        return render(request,'posts/feed.html',{'posts':posts,'profile': profile})
+    else:
+        return redirect('login')
