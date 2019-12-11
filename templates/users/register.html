@@ -1,0 +1,26 @@
+{% extends 'users/base.html' %}
+
+{% block head_content %}
+<title>Platzigram register</title>
+{% endblock %}
+
+{% block container %}
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form class="" action="{% url "register" %}" method="post">
+        <div class="form-group">
+            <input class="form-control" required type="text" placeholder="Username" name="username"/>
+        </div>
+        <div class="form-group">
+            <input class="form-control" required type="password" placeholder="Password" name="password">
+        </div >
+        <div class="form-group">
+            <input class="form-control" required type="password" placeholder="Repeat Password" name="repeat_password">
+        </div>
+        <button class='btn btn-primary btn-block mt-5' type="submit">Sign in!</button>
+
+
+    </form>
+
+{% endblock %}

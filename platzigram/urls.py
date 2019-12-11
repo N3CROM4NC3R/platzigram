@@ -32,6 +32,9 @@ urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
     path('register/<str:name>/<int:age>/',local_views.register,name='register'),
     path('posts/',posts_views.list_posts,name='feed'),
+    path('posts/logout/',users_views.logout_view,name='logout'),
+    path('users/register/',users_views.register_view,name='register'),
     path('users/login/',users_views.login_view,name='login'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

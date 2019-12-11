@@ -2,6 +2,7 @@
 # Django
 from django.shortcuts import render,redirect
 from django.db import models
+from django.contrib.auth.decorators import login_required
 #Local
 from users.models import Profile
 
@@ -43,11 +44,9 @@ posts = [
     }
 ]
 
+
+@login_required()
 def list_posts(request):
     user = request.user
-    profile = Profile.objects.get(user_id = user.id )
-    if profile:
-        print(profile.picture)
-        return render(request,'posts/feed.html',{'posts':posts,'profile': profile})
-    else:
-        return redirect('login')
+    profile = Profile.objects.get(user_id = user.id)
+    return render(request,'posts/feed.html',{'posts':posts,'profile': profile})
