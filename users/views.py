@@ -5,8 +5,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators
+
+# Local
+from users.models import Profile
+
 # Create your views here.
+
+
+@login_required
+def update_profile(request):
+    """ Update a user's profile view. """
+    return render(request,"users/update_profile.html")
 
 def login_view(request):
     """ Login View. """
@@ -38,10 +47,39 @@ def logout_view(request):
 
 def register_view(request):
     """ Register View. """
+
     if request.method == "POST":
+
         username = request.POST["username"]
+        email = request.POST["email"]
         password = request.POST["password"]
         password_repeat = request.POST["repeat_password"]
-        if password == password_repeat:
+
+        if password != password_repeat:
+            ctx = {
+                "error":"Passwords not match"
+            }
+            return render(request,"users/register.html",ctx)
+
+        try:
+            user = User.objects.create_user(username=username,email=email,password=password)
+        except IntegrityError as ie:
+            ctx = {
+                "error":"User exists",
+            }
+            return render(request,"users/register.html",ctx)
+
+
+        user.first_name = request.POST["first_name"]
+        user.last_name = request.POST["last_name"]
+        user.save()
+
+        profile = Profile(user=user)
+        profile.save()
+
+        ctx = {
+            "message":"User created with successfully"
+        }
+        return render(request,"users/register.html",ctx)
 
     return render(request,"users/register.html")

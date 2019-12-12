@@ -35,6 +35,6 @@ urlpatterns = [
     path('posts/logout/',users_views.logout_view,name='logout'),
     path('users/register/',users_views.register_view,name='register'),
     path('users/login/',users_views.login_view,name='login'),
-
+    path('users/se/profile/',users_views.update_profile,name='update_profile'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

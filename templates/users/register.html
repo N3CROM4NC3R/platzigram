@@ -8,9 +8,22 @@
     {% if error %}
         <div class="alert alert-danger">{{ error }}</div>
     {% endif %}
-    <form class="" action="{% url "register" %}" method="post">
+    {% if message %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+    <form action="{% url "register" %}" method="POST">
+        {% csrf_token %}
         <div class="form-group">
             <input class="form-control" required type="text" placeholder="Username" name="username"/>
+        </div>
+        <div class="form-group">
+            <input class="form-control" required type="email" placeholder="Email" name="email">
+        </div >
+        <div class="form-group">
+            <input class="form-control" required type="text" placeholder="First Name" name="first_name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" required type="text" placeholder="Last Name" name="last_name">
         </div>
         <div class="form-group">
             <input class="form-control" required type="password" placeholder="Password" name="password">
@@ -18,7 +31,8 @@
         <div class="form-group">
             <input class="form-control" required type="password" placeholder="Repeat Password" name="repeat_password">
         </div>
-        <button class='btn btn-primary btn-block mt-5' type="submit">Sign in!</button>
+
+        <button class='btn btn-primary btn-block mt-5' type="submit">Signup!</button>
 
 
     </form>
