@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     'posts',
     'users',
 ]
+PLATZIGRAM_MIDDLEWARES = [
+    'platzigram.middleware.ProfileCompletionMiddleware',
+    'platzigram.middleware.ActiveUserMiddleware',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,9 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'platzigram.middleware.ProfileCompletionMiddleware',
-    'platzigram.middleware.ActiveUserMiddleware',
-]
+] + PLATZIGRAM_MIDDLEWARES
 
 ROOT_URLCONF = 'platzigram.urls'
 
