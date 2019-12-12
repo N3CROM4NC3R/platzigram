@@ -15,7 +15,24 @@ from users.models import Profile
 @login_required
 def update_profile(request):
     """ Update a user's profile view. """
-    return render(request,"users/update_profile.html")
+    if request.method == "POST":
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        email = request.POST["email"]
+        website = request.POST["website"]
+        biography = request.POST["biography"]
+
+        request.user.first_name = first_name
+        request.user.last_name = last_name
+        request.user.email = email
+        request.user.profile.website = website
+
+
+    ctx = {
+        "user"   : request.user,
+        "profile": request.user.profile
+    }
+    return render(request,"users/update_profile.html",ctx)
 
 def login_view(request):
     """ Login View. """

@@ -5,26 +5,36 @@
 
 {% block container %}
 {% load static %}
-    <h1 class="mt-5">@{{ request.user.username }}</h1>
     <div class="container h-100">
+        
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-sm-12 col-md-5 col-lg-5 pt-2 pl-5 pr-5 pb-5" id="auth-container">
-            <form>
-                <div class='form-group'>
-                    <img src="{% static "img/default-profile.png" %}" height="100" class="d-inline-block align-top rounded-circle">
-                    <span class='badge badge-secondary' style="font-size:20px;" >{{request.user.username}}</span>
-                    
+            <form method="POST" action="{% url 'update_profile'%}">
+                <div class="media">
+                    <img src="{% static 'img/default-profile.png' %}" height="100" class="mr-3">
+                    <div class="media-body">
+                        <h5 class="ml-4">@{{user.username}}</h5>
+                        <h5 class="ml-4">{{user.get_full_name}}</h5>
+                        <input class="form-control" type="file">
+                    </div>
+                </div>
+                <br/>
+                <div class='form-group'>   
+                    <input class="form-control" required type="text" placeholder="First Name" value={{user.first_name}}>
+                </div>
+                <div class='form-group'>   
+                    <input class="form-control" required type="text" placeholder="First Name" value={{user.last_name}}>
+                </div>
+                <div class='form-group'>   
+                    <input class="form-control" required type="email" placeholder="Email" value={{profile.email}}>
                 </div>
                 <div class='form-group'>
-                
-                    
+                    <input class='form-control' required type="url" value="{{profile.website}}" placeholder="Website">
                 </div>
                 <div class='form-group'>
-                    <input class='form-control' type="url" value="{{profile.website}}" placeholder="Website">
+                    <textarea class='form-control' required value="{{profile.biography}}" placeholder="Biography"></textarea>
                 </div>
-                <div class='form-group'>
-                    <input class='form-control' value="{{profile.biography}}" type="textarea" placeholder="Biograpy">
-                </div>
+                <button class="btn btn-primary btn-block">Ready!</button>
             </form>
         </div>
     </div>
