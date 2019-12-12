@@ -26,7 +26,9 @@ def update_profile(request):
         request.user.last_name = last_name
         request.user.email = email
         request.user.profile.website = website
-
+        request.user.profile.biography = biography
+        request.user.save()
+        return redirect('feed')
 
     ctx = {
         "user"   : request.user,
