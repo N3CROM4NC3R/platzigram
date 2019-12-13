@@ -30,12 +30,12 @@ urlpatterns = [
     #Django
     path('admin/', admin.site.urls,name='admin'),
     # Posts
-    path('posts/',posts_views.list_posts,name='feed'),
-    path('posts/logout/',users_views.logout_view,name='logout'),
+    path('',posts_views.list_posts,name='feed'),
+    path('posts/new/',posts_views.create_post,name='create_post'),
     # Users
+    path('users/logout/',users_views.logout_view,name='logout'),
     path('users/register/',users_views.register_view,name='register'),
-    path('',users_views.login_view,name='login'),
-    path('users/login/',users_views.login_view,name='login'),
+    path('users/login',users_views.login_view,name='login'),
     path('users/se/profile/',users_views.update_profile,name='update_profile'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -20,10 +20,11 @@ def update_profile(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            profile.picture = form.cleaned_data["picture"]
-            profile.website = form.cleaned_data["website"]
-            profile.phone_number = form.cleaned_data["phone_number"]
-            profile.biography = form.cleaned_data["biography"]
+            data = form.cleaned_data
+            profile.picture = data["picture"]
+            profile.website = data["website"]
+            profile.phone_number = data["phone_number"]
+            profile.biography = data["biography"]
             profile.save()
             return redirect('feed')
     else:

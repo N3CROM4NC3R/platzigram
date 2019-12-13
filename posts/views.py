@@ -5,48 +5,50 @@ from django.db import models
 from django.contrib.auth.decorators import login_required
 #Local
 from users.models import Profile
+from posts.models import Post
+from posts.forms import PostForm
 
 # Utilities
 from datetime import datetime
 # Create your views here.
 
-posts = [
-    {
-        'title':'Mont Blac',
-        "user":{
-
-            'name':'Yesica Cortes',
-            'picture':'https://picsum.photos/60/60/?image=1027',
-        },
-        'photo':'https://picsum.photos/200/300/?image=1036',
-        'timestamp':datetime.now().strftime('%b %dth, %Y - %H:%M'),
-    },
-    {
-        'title':'Via Làctea',
-        "user":{
-
-            'name':'C. Vander',
-            'picture':'https://picsum.photos/60/60/?image=1005'
-        },
-        'timestamp':datetime.now().strftime('%b %dth, %Y - %H:%M'),
-        'photo':'https://picsum.photos/200/300/?image=903',
-    },
-    {
-        'title':'Nuevo auditorio',
-        "user":{
-
-            'name':'Thepianartist',
-            'picture':'https://picsum.photos/60/60/?image=883'
-        },
-        'photo':'https://picsum.photos/200/300/?image=1076',
-        'timestamp':datetime.now().strftime('%b %dth, %Y - %H:%M'),
-
-    }
-]
-
-
 @login_required()
 def list_posts(request):
+    """list Posts
+    Show all Platzigram's posts in feed
+    """
+    posts = Post.objects.all()
     user = request.user
-    profile = Profile.objects.get(user_id = user.id)
-    return render(request,'posts/feed.html',{'posts':posts,'profile': profile})
+    profile = user.profile
+    ctx = {
+        "user"    : user,
+        "profile" : profile,
+        "posts" : posts
+    }
+    return render(request,'posts/feed.html',ctx)
+
+@login_required()
+def create_post(request):
+    """Create post
+
+        Create a new post for the user
+    """
+    profile = request.user.profile
+
+    if request.method == 'POST':
+
+        form = PostForm(request.POST,request.FILES)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('feed')
+    else:
+        form = PostForm()
+
+    ctx = {
+        "user": request.user,
+        "profile": profile,
+        "form" : form,
+    }
+    return render(request,'posts/create_post.html',ctx)

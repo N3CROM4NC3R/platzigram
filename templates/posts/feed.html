@@ -5,15 +5,15 @@
 {% block container %}
     <div class='row'>
         {% for post in posts%}
-            <div class='col-lg-4 offset-lg-4'>
+            <div class='col-lg-4 offset-lg-4 pt-5'>
                 <div class="media">
-                    <img class="mr-3 rounded-circle" src="{{post.user.picture}}" alt="{{post.user.name}}">
+                    <img class="mr-5 rounded-circle h-100" src="{{post.profile.picture.url}}" alt="{{post.user.name}}">
                     <div class="media-body">
-                        <h5 class="mt-0">{{post.user.name}}</h5>
-                        {{post.timestamp}}
+                        <h5 class="mt-0">#{{post.profile.user.username}}</h5>
+                        {{post.created}}
                 </div>
                 </div>
-                <img class='img-fluid mt-3 border rounded' src={{post.photo}} alt={{post.title}}>
+                <img class='img-fluid mt-3 border rounded' src={{post.photo.url}} alt={{post.title}}>
                 <h4 class='ml-1 mt-1'>{{post.title}}</h4>
             </div>
         {% endfor %}
