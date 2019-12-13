@@ -1,41 +1,71 @@
-{% extends 'base.html'%}
+{% extends "base.html"%}
 {% block head_content %}
     <title>@{{request.user.username}} | Update profile </title>
 {% endblock %}
 
 {% block container %}
 {% load static %}
-    <div class="container h-100">
-        
-        <div class="row h-100 justify-content-center align-items-center">
-            <div class="col-sm-12 col-md-5 col-lg-5 pt-2 pl-5 pr-5 pb-5" id="auth-container">
-            <form method="POST" action="{% url 'update_profile'%}">
-                <div class="media">
-                    <img src="{% static 'img/default-profile.png' %}" height="100" class="mr-3">
-                    <div class="media-body">
-                        <h5 class="ml-4">@{{user.username}}</h5>
-                        <h5 class="ml-4">{{user.get_full_name}}</h5>
-                        <input class="form-control" type="file">
+    <div class="container w-200 h-200">
+        <div class="row justify-content-md-center">
+            <div class="col-6 p-4" id="profile-box">
+                <form method="POST" action="{% url 'update_profile'%}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <p class="alert alert-danger">{{ form.errors }}</p>
+                    {% endif %}
+                    <div class="media">
+                    {% if profile.picture %}
+                        <img src="{{ profile.picture.url }}" class="rounded-circle" height="50" />
+                    {% else%}
+                        <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" height="50" />
+                    {% endif %}
+                        <div class="media-body">
+                            <h5 class="ml-4">@{{user.username}}</h5>
+                            <h5 class="ml-4">{{user.get_full_name}}</h5>
+                            <input
+                                class="ml-4 form-control"
+                                name="picture"
+                                required='true'
+                                type="file"
+                                value="{{profile.picture.url}}"
+                            />
+                        </div>
                     </div>
-                </div>
-                <br/>
-                <div class='form-group'>   
-                    <input class="form-control" required type="text" placeholder="First Name" value={{user.first_name}}>
-                </div>
-                <div class='form-group'>   
-                    <input class="form-control" required type="text" placeholder="First Name" value={{user.last_name}}>
-                </div>
-                <div class='form-group'>   
-                    <input class="form-control" required type="email" placeholder="Email" value={{profile.email}}>
-                </div>
-                <div class='form-group'>
-                    <input class='form-control' required type="url" value="{{profile.website}}" placeholder="Website">
-                </div>
-                <div class='form-group'>
-                    <textarea class='form-control' required value="{{profile.biography}}" placeholder="Biography"></textarea>
-                </div>
-                <button class="btn btn-primary btn-block">Ready!</button>
-            </form>
+                    <br/>
+                    <div class='form-group'>
+                        <input
+                            class='form-control'
+                            required
+                            type="url"
+                            value="{{profile.website}}"
+                            placeholder="Website"
+                            name='website'
+                        />
+                    </div>
+                    <div class='form-group'>
+                        <input
+                            class='form-control'
+                            required
+                            placeholder="Phone Number"
+                            type="text"
+                            value="{{profile.phone_number}}"
+                            name='phone_number'
+                        >
+                    </div>
+                    <div class='form-group'>
+                        <textarea
+                            class='form-control'
+                            required
+                            placeholder="Biography"
+                            name='biography'
+                        >
+                        {{profile.biography}}
+                        </textarea>
+                    </div>
+
+                    <button class="btn btn-primary btn-block">Update Profile!</button>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

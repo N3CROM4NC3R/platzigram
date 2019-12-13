@@ -27,13 +27,14 @@ from posts import views as posts_views
 from users import views as users_views
 
 urlpatterns = [
-    path('sort_numbers',local_views.sort_numbers,name='sort'),
-    path('helloworld/',local_views.hello_world,name='hello_world'),
+    #Django
     path('admin/', admin.site.urls,name='admin'),
-    path('register/<str:name>/<int:age>/',local_views.register,name='register'),
+    # Posts
     path('posts/',posts_views.list_posts,name='feed'),
     path('posts/logout/',users_views.logout_view,name='logout'),
+    # Users
     path('users/register/',users_views.register_view,name='register'),
+    path('',users_views.login_view,name='login'),
     path('users/login/',users_views.login_view,name='login'),
     path('users/se/profile/',users_views.update_profile,name='update_profile'),
 

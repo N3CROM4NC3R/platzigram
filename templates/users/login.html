@@ -10,7 +10,7 @@
         <div class="alert alert-danger">{{ error }}</div>
     {% endif %}
 
-    <form method="POST" action="{% url "login" %}">
+    <form method="POST" action="{% url "login" %}" >
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" required type="text" placeholder="Username" name="username" />

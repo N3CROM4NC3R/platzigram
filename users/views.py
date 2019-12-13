@@ -8,33 +8,38 @@ from django.contrib.auth.decorators import login_required
 
 # Local
 from users.models import Profile
-
+from users.forms import ProfileForm
 # Create your views here.
 
 
 @login_required
 def update_profile(request):
     """ Update a user's profile view. """
-    if request.method == "POST":
-        first_name = request.POST["first_name"]
-        last_name = request.POST["last_name"]
-        email = request.POST["email"]
-        website = request.POST["website"]
-        biography = request.POST["biography"]
+    profile = request.user.profile
 
-        request.user.first_name = first_name
-        request.user.last_name = last_name
-        request.user.email = email
-        request.user.profile.website = website
-        request.user.profile.biography = biography
-        request.user.save()
-        return redirect('feed')
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile.picture = form.cleaned_data["picture"]
+            profile.website = form.cleaned_data["website"]
+            profile.phone_number = form.cleaned_data["phone_number"]
+            profile.biography = form.cleaned_data["biography"]
+            profile.save()
+            return redirect('feed')
+    else:
+        form = ProfileForm()
+
 
     ctx = {
         "user"   : request.user,
-        "profile": request.user.profile
+        "profile": profile,
+        "form"   : form,
     }
-    return render(request,"users/update_profile.html",ctx)
+    return render(
+            request       = request,
+            template_name ="users/update_profile.html",
+            context       = ctx,
+        )
 
 def login_view(request):
     """ Login View. """

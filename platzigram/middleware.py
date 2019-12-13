@@ -33,8 +33,8 @@ class ProfileCompletionMiddleware:
 class ActiveUserMiddleware:
     """Active user Middleware
 
-    Makes sure that an active user upon logging
-    in or login is redirected to feed 
+    Makes sure that an active user upon register
+    or login is redirected to feed
     """
 
     def __init__(self,get_response):
