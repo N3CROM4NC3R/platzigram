@@ -27,7 +27,5 @@ class Post(models.Model):
             title=self.title,
             username=self.profile.user.username,
         )
-    class Meta:
-        ordering = ["-created"]
     def username(self):
         return self.profile.user

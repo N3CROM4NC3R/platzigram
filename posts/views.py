@@ -17,7 +17,7 @@ def list_posts(request):
     """list Posts
     Show all Platzigram's posts in feed
     """
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by("-created")
     user = request.user
     profile = user.profile
     ctx = {
