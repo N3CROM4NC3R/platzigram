@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 # Local
 from users.models import Profile
-from users.forms import ProfileForm
+from users.forms import ProfileForm, SignupForm
 # Create your views here.
 
 
@@ -74,37 +74,17 @@ def register_view(request):
     """ Register View. """
 
     if request.method == "POST":
-
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password = request.POST["password"]
-        password_repeat = request.POST["repeat_password"]
-
-        if password != password_repeat:
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
             ctx = {
-                "error":"Passwords not match"
+                "form":form,
+                "message":"User created with successfull",
             }
             return render(request,"users/register.html",ctx)
-
-        try:
-            user = User.objects.create_user(username=username,email=email,password=password)
-        except IntegrityError as ie:
-            ctx = {
-                "error":"User exists",
-            }
-            return render(request,"users/register.html",ctx)
-
-
-        user.first_name = request.POST["first_name"]
-        user.last_name = request.POST["last_name"]
-        user.save()
-
-        profile = Profile(user=user)
-        profile.save()
-
-        ctx = {
-            "message":"User created with successfully"
-        }
-        return render(request,"users/register.html",ctx)
-
-    return render(request,"users/register.html")
+    else:
+        form = SignupForm()
+    ctx = {
+        "form":form
+    }
+    return render(request,"users/register.html",ctx)

@@ -13,24 +13,8 @@
     {% endif %}
     <form action="{% url "register" %}" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" required type="text" placeholder="Username" name="username"/>
-        </div>
-        <div class="form-group">
-            <input class="form-control" required type="email" placeholder="Email" name="email">
-        </div >
-        <div class="form-group">
-            <input class="form-control" required type="text" placeholder="First Name" name="first_name">
-        </div>
-        <div class="form-group">
-            <input class="form-control" required type="text" placeholder="Last Name" name="last_name">
-        </div>
-        <div class="form-group">
-            <input class="form-control" required type="password" placeholder="Password" name="password">
-        </div >
-        <div class="form-group">
-            <input class="form-control" required type="password" placeholder="Repeat Password" name="repeat_password">
-        </div>
+        {{ form.as_table }}
+
 
         <button class='btn btn-primary btn-block mt-5' type="submit">Signup!</button>
         <span>You have a account?<a href="{%url 'login'%}">Login</a></span>
