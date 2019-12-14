@@ -1,11 +1,34 @@
 """ Platzigram middleware catalog. """
 
-# Django
+""" Django Imports """
 from django.shortcuts import redirect
 from django.urls import reverse
 
+""" Local Imports. """
 
+#Models
+from users.models import Profile
 
+class ProfileCreateMiddleware:
+    """Profile Create MIDDLEWARE
+
+        If the profile of the user active is eliminated
+        this middleware will create her
+    """
+
+    def __init__(self,get_response):
+        self.get_response = get_response
+
+    def __call__(self,request):
+        if not request.user.is_anonymous:
+            if not hasattr(request.user,'profile'):
+                profile = Profile(user=request.user)
+                profile.save()
+                redirect("update_profile")
+
+        response = self.get_response(request)
+
+        return response
 class ProfileCompletionMiddleware:
     """Profile completion middleware
 
