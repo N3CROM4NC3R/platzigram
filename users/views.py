@@ -82,6 +82,9 @@ def register_view(request):
                 "message":"User created with successfull",
             }
             return render(request,"users/register.html",ctx)
+        else:
+            print(form.errors.as_data())
+
     else:
         form = SignupForm()
     ctx = {

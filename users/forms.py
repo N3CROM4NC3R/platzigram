@@ -80,6 +80,7 @@ class SignupForm(forms.Form):
         username_taken = User.objects.filter(username=username).exists()
 
         if username_taken:
+            this.add_error('username','Username is already in use.')
             raise forms.ValidationError('Username is already in use.')
 
         return username
@@ -90,6 +91,7 @@ class SignupForm(forms.Form):
         email_taken = User.objects.filter(email=email).exists()
 
         if email_taken:
+            self.add_error("email",'Email is already in use')
             raise forms.ValidationError('Email is already in use')
 
         return email
@@ -97,8 +99,8 @@ class SignupForm(forms.Form):
         data = super().clean()
         password = data["password"]
         password_confirmation = data["password_confirmation"]
-
         if password != password_confirmation:
+            self.add_error("password","Password do not match")
             raise forms.ValidationError("Password do not match")
 
         return data
