@@ -6,22 +6,31 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
+from django.urls import reverse
 
 # Local
 from users.models import Profile
+from posts.models import Post
 from users.forms import ProfileForm, SignupForm, LoginForm
 # Create your views here.
 
 class UserDetailView(DetailView):
     """ User detail view. """
 
-    
     template_name = 'users/details.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
     queryset = User.objects.all()
+    context_object_name = 'user'
 
+    def get_context_data(self,**kwargs):
+        """Add user's posts to context"""
+        context = super().get_context_data(**kwargs)
 
+        user = self.get_object()
+        context['posts'] = Post.objects.filter(profile_id=user.profile).order_by('-created')
+        context['posts_count'] = len(context['posts'])
+        return context
 
 
 @login_required
@@ -38,7 +47,10 @@ def update_profile(request):
             profile.phone_number = data["phone_number"]
             profile.biography = data["biography"]
             profile.save()
-            return redirect('posts:feed')
+
+            url = reverse('users:detail',kwargs={'username':request.user.username})
+            print(url)
+            return redirect(url)
     else:
         form = ProfileForm()
 

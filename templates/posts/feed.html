@@ -14,7 +14,14 @@
                     </div>
                     </div>
                     <img style="width:100%;"  src={{post.photo.url}} alt={{post.title}}>
+                    <div class="col text-center">
+                        <button class="btn btn-outline-primary mt-2 mb-2 center-block">
+                            <i class="fas fa-thumbs-up">{{ post.likes }}42 Likes</i>
+                        </button>
+                    </div class="col text-center">
+                    <br>
                     <b>{{post.title}}</b> - <small>{{post.created}}</small>
+                    
                 </div>
             {% endfor %}
         </div>

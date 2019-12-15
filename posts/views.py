@@ -3,6 +3,7 @@
 from django.shortcuts import render,redirect
 from django.db import models
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 #Local
 from users.models import Profile
 from posts.models import Post
@@ -11,6 +12,15 @@ from posts.forms import PostForm
 # Utilities
 from datetime import datetime
 # Create your views here.
+
+class ListPostsView(ListView):
+    model = Post
+    template_name = "posts/feed.html"
+    context_object_name = "post"
+    
+
+
+
 
 @login_required()
 def list_posts(request):

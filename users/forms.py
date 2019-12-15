@@ -156,7 +156,7 @@ class ProfileForm(forms.Form):
                                         "max_length":"200",
                                 }
                             ))
-    Biography = forms.CharField(
+    biography = forms.CharField(
                                 max_length=500,
                                 required=True,
                                 widget=forms.TextInput(attrs={

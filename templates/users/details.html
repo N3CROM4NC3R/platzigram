@@ -34,7 +34,7 @@
                 </h2>
                 <div class="row mt-2" style="font-size:1.2em">
                     <div class="col sm-4">
-                        <b>{{ user.profile.posts_count }} 786</b> Posts
+                        <b>{{ posts_count }}</b> Posts
                     </div>
                     <div class="col sm-4">
                         <b>{{ user.profile.followers }}1,401</b> Followers
@@ -47,9 +47,18 @@
                     <div class="col-sm-12">
                         <p>{{ user.profile.biography }}</p>
                     </div>
-
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="container" id="user-posts" >
+            <div class="row mt-3">
+            {% for post in posts %}
+                <div class="col-sm-4 pt-5 pb-5 pr-5 pl-5 d-flex justify-content-center align-items-center">
+                    <img src="{{post.photo.url}}" class="{{post.title}}" class="img-fluid"/>
+                    
+                </div>
+            {% endfor %}
             </div>
         </div>
     </div>
