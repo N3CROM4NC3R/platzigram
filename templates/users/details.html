@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block head_content %}
+    <title>@{{user.username}}|Platzigram</title>
+{% endblock %}
+
+{% block container %}
+    <div class="container mb-5" style='margin-top:8em'>
+        <div class='row'>
+            <div class="col-sm-4 d-flex justify-content-center">
+                <img
+                    src="{{ user.profile.picture.url }}"
+                    alt="@{{ user.username }}"
+                    class="rounded-circle"
+                    width="150px"/>
+            </div>
+            <div class="col-sm-8">
+                <h2 style="font-weight:100;">
+                    {{ user.username }}
+                    {% if request.user.username == user.username %}
+                    <a
+                        href="{% url "users:update_profile" %}"
+                        class="ml-5 btn btn-sm btn-outline-info"
+                    >
+                    Edit profile
+                    </a>
+                    {% else %}
+                    <a
+                        href=""
+                        class="ml-5 btn btn-sm btn-outline-info"
+                    >
+                    Follow
+                    </a>
+                    {% endif %}
+                </h2>
+                <div class="row mt-2" style="font-size:1.2em">
+                    <div class="col sm-4">
+                        <b>{{ user.profile.posts_count }} 786</b> Posts
+                    </div>
+                    <div class="col sm-4">
+                        <b>{{ user.profile.followers }}1,401</b> Followers
+                    </div>
+                    <div class="col sm-4">
+                        <b>{{ user.profile.following }}491</b> Following
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-sm-12">
+                        <p>{{ user.profile.biography }}</p>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+{% endblock %}

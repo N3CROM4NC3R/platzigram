@@ -5,11 +5,23 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView
 
 # Local
 from users.models import Profile
-from users.forms import ProfileForm, SignupForm
+from users.forms import ProfileForm, SignupForm, LoginForm
 # Create your views here.
+
+class UserDetailView(DetailView):
+    """ User detail view. """
+
+    
+    template_name = 'users/details.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+    queryset = User.objects.all()
+
+
 
 
 @login_required
@@ -26,7 +38,7 @@ def update_profile(request):
             profile.phone_number = data["phone_number"]
             profile.biography = data["biography"]
             profile.save()
-            return redirect('feed')
+            return redirect('posts:feed')
     else:
         form = ProfileForm()
 
@@ -44,31 +56,39 @@ def update_profile(request):
 
 def login_view(request):
     """ Login View. """
+    error = ""
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        form = LoginForm(request.POST)
+        if form.is_valid():
 
-        user = authenticate(request,username=username,password=password)
+            data = form.cleaned_data
 
-        # If the user exits redirect to the feed
-        if user:
-            login(request, user)
-            return redirect('feed')
+            username = data["username"]
+            password = data["password"]
+            user = authenticate(request,username=username,password=password)
+            if user:
+                login(request, user)
+                return redirect('posts:feed')
+
+            else:
+                error = "User or password do not match"
 
         # Else redirect to the login
-        else:
-            ctx = {'error':'User or pass wrong.'}
-            return render(request,"users/login.html",ctx)
-
     else:
-        return render(request,"users/login.html")
+        form = LoginForm()
+
+    ctx = {
+        "form" : form,
+        "error": error,
+    }
+    return render(request,"users/login.html",ctx)
 
 
 @login_required()
 def logout_view(request):
     """ Logout View. """
     logout(request)
-    return redirect('login')
+    return redirect('users:login')
 
 def register_view(request):
     """ Register View. """

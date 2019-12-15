@@ -11,7 +11,7 @@
     {% if message %}
         <div class="alert alert-success">{{ message }}</div>
     {% endif %}
-    <form action="{% url "register" %}" method="POST">
+    <form action="{% url 'users:register' %}" method="POST">
         {% csrf_token %}
 
         {% for field in form %}
@@ -27,7 +27,7 @@
 
 
         <button class='btn btn-primary btn-block mt-5' type="submit">Signup!</button>
-        <span>You have a account?<a href="{%url 'login'%}">Login</a></span>
+        <span>You have a account?<a href="{%url 'users:login'%}">Login</a></span>
 
     </form>
 

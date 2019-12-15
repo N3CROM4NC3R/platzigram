@@ -2,14 +2,14 @@
 """ Django """
 # Form
 from django import forms
+from django.contrib.auth import authenticate
 # Contrib
 from django.contrib.auth.models import User
 """ Locals """
 # Models
 from users.models import Profile
-class SignupForm(forms.Form):
-    """ Register/Sign-up Form. """
 
+class  LoginForm(forms.Form):
     username = forms.CharField(
                                 label=False,
                                 max_length=100,
@@ -29,18 +29,24 @@ class SignupForm(forms.Form):
                                         "required":True,
                                         "placeholder":"Password",
                                     }
-                            ))
-    password_confirmation = forms.CharField(
-                                            label=False,
-                                            min_length=8,
-                                            max_length=70,
-                                            widget=forms.PasswordInput(
-                                                attrs={
-                                                "class":"form-control mb-3",
-                                                "required":True,
-                                                "placeholder":"Password confirmation",
-                                                }
-                                            ))
+                                )
+                            )
+
+
+
+class SignupForm(forms.Form):
+    """ Register/Sign-up Form. """
+
+    username = forms.CharField(
+                                label=False,
+                                max_length=100,
+                                widget=forms.TextInput(
+                                    attrs={
+                                        "class":"form-control mb-3",
+                                        "required":True,
+                                        "placeholder":"Username",
+                                    }))
+
 
     first_name = forms.CharField(
                                 label=False,
@@ -73,6 +79,29 @@ class SignupForm(forms.Form):
                                                     "required":True,
                                                     "placeholder":"Email",
                                                 }))
+
+    password = forms.CharField(
+                                label=False,
+                                min_length=8,
+                                max_length=70,
+                                widget=forms.PasswordInput(
+                                    attrs={
+                                        "class":"form-control mb-3",
+                                        "required":True,
+                                        "placeholder":"Password",
+                                    }
+                            ))
+    password_confirmation = forms.CharField(
+                                            label=False,
+                                            min_length=8,
+                                            max_length=70,
+                                            widget=forms.PasswordInput(
+                                                attrs={
+                                                "class":"form-control mb-3",
+                                                "required":True,
+                                                "placeholder":"Password confirmation",
+                                                }
+                                            ))
 
     def clean_username(self):
 
@@ -124,11 +153,31 @@ class ProfileForm(forms.Form):
                                         "class":"form-control",
                                         "required":True,
                                         "placeholder":"Website",
+                                        "max_length":"200",
                                 }
                             ))
-    biography = forms.CharField(
+    Biography = forms.CharField(
                                 max_length=500,
-                                required=False)
-    phone_number = forms.CharField(max_length=20,required=False)
+                                required=True,
+                                widget=forms.TextInput(attrs={
+                                    "class":"form-control",
+                                    "placeholder":"Biography",
+                                    "max_length":"500",
+                                    "required":True,
+                                }))
 
-    picture = forms.ImageField()
+    phone_number = forms.CharField(
+                                    max_length=20,
+                                    required=False,
+                                    widget=forms.TextInput(attrs={
+                                        "class":"form-control",
+                                        "placeholder":"Phone Number",
+                                        "max_length":"20",
+                                        "required":True,
+                                    }))
+
+    picture = forms.ImageField(widget=forms.FileInput(
+                                                    attrs={
+                                                        "class":"form-control"
+                                                    }
+    ))

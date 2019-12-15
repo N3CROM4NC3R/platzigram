@@ -2,7 +2,7 @@
 
 """ Django Imports """
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 """ Local Imports. """
 
@@ -24,7 +24,7 @@ class ProfileCreateMiddleware:
             if not hasattr(request.user,'profile'):
                 profile = Profile(user=request.user)
                 profile.save()
-                redirect("update_profile")
+                redirect("users:update_profile")
 
         response = self.get_response(request)
 
@@ -47,8 +47,8 @@ class ProfileCompletionMiddleware:
             profile = request.user.profile
 
             if not profile.picture or not profile.biography:
-                if request.path not in [reverse('update_profile'),reverse('logout')]:
-                    return redirect("update_profile")
+                if request.path not in [reverse_lazy('users:update_profile'),reverse_lazy('users:logout')]:
+                    return redirect("users:update_profile")
 
         response = self.get_response(request)
         return response
@@ -66,8 +66,8 @@ class ActiveUserMiddleware:
     def __call__(self,request):
 
         if not request.user.is_anonymous:
-            if request.path == reverse('login') or request.path == reverse('register'):
-             return redirect('feed')
+            if request.path == reverse_lazy('users:login') or request.path == reverse_lazy('users:register'):
+             return redirect('posts:feed')
 
         response = self.get_response(request)
         return response

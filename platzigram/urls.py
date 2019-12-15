@@ -18,24 +18,17 @@ Including another URLconf
 # Django
 from django.contrib import admin
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 
 #Project 'Platzigram'
-from platzigram import views as local_views
-from posts import views as posts_views
-from users import views as users_views
 
 urlpatterns = [
     #Django
     path('admin/', admin.site.urls,name='admin'),
     # Posts
-    path('',posts_views.list_posts,name='feed'),
-    path('posts/new/',posts_views.create_post,name='create_post'),
+    path('',include(("posts.urls","posts"),namespace='posts')),
     # Users
-    path('users/logout/',users_views.logout_view,name='logout'),
-    path('users/register/',users_views.register_view,name='register'),
-    path('users/login',users_views.login_view,name='login'),
-    path('users/se/profile/',users_views.update_profile,name='update_profile'),
+    path("users/",include(("users.urls",'users'),namespace='users')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
