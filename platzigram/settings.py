@@ -147,3 +147,4 @@ MEDIA_URL = "/media/"
 
 # login
 LOGIN_URL = 'users:login'
+LOGOUT_REDIRECT_URL = LOGIN_URL

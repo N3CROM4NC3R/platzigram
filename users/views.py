@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView, UpdateView, FormView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -66,10 +66,15 @@ class ProfileUpdateView(LoginRequiredMixin,UpdateView):
 class UserLoginView(LoginView):
     model = User
     template_name = "users/login.html"
-    success_url = reverse_lazy("posts:feed")
+    redirect_authenticated_user = reverse_lazy("posts:feed")
     form_class = LoginForm
 
-    
+
+
+class UserLogoutView(LogoutView):
+
+    template_name = "users/logot.html"
+
 
 @login_required()
 def logout_view(request):
