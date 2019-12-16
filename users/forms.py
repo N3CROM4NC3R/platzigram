@@ -3,13 +3,14 @@
 # Form
 from django import forms
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import AuthenticationForm
 # Contrib
 from django.contrib.auth.models import User
 """ Locals """
 # Models
 from users.models import Profile
 
-class  LoginForm(forms.Form):
+class LoginForm(AuthenticationForm):
     username = forms.CharField(
                                 label=False,
                                 max_length=100,
@@ -31,6 +32,10 @@ class  LoginForm(forms.Form):
                                     }
                                 )
                             )
+                            
+    def get_invalid_login_error(self):
+        self.add_error('username','User or password do not match')
+        return super().get_invalid_login_error()
 
 
 

@@ -28,11 +28,11 @@ urlpatterns = [
 
     path(
         route='login/',
-        view=views.login_view,
+        view=views.UserLoginView.as_view(),
         name='login'
     ),
     path(route='me/profile/',
-        view=views.update_profile,
+        view=views.ProfileUpdateView.as_view(),
         name='update_profile'
     ),
 ]
