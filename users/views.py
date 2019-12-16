@@ -1,14 +1,15 @@
 """Views Users."""
 
-# Django
+""" Django imports. """
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-# Local
+
+""" Local imports """
 from users.models import Profile
 from posts.models import Post
 from users.forms import ProfileForm, SignupForm, LoginForm
@@ -31,6 +32,10 @@ class UserDetailView(DetailView):
         context['posts'] = Post.objects.filter(profile_id=user.profile).order_by('-created')
         context['posts_count'] = len(context['posts'])
         return context
+
+class UpdateProfileUpdateView(UpdateView):
+    pass
+
 
 
 @login_required

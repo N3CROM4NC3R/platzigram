@@ -2,9 +2,9 @@
 # Django
 from django.shortcuts import render,redirect
 from django.db import models
-from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 #Local
 from users.models import Profile
 from posts.models import Post
@@ -14,45 +14,26 @@ from posts.forms import PostForm
 from datetime import datetime
 # Create your views here.
 
-class ListPostsView(LoginRequiredMixin,ListView):
+class PostListView(LoginRequiredMixin,ListView):
     model = Post
     template_name = "posts/feed.html"
     context_object_name = "posts"
-    paginate_by = 2
+    ordering = ('-created')
+    paginate_by = 30
 
-class DetailPostView(LoginRequiredMixin,DetailView):
-    model = Post
+class PostDetailView(LoginRequiredMixin,DetailView):
+    queryset = Post.objects.all()
     template_name = "posts/details.html"
     context_object_name = "post"
-    slug_url_kwarg = "post"
-    slug_field = "id"
 
+class PostCreateView(LoginRequiredMixin,CreateView):
+    template_name = "posts/create_post.html"
+    form_class = PostForm
+    success_url = reverse_lazy("posts:feed")
 
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
 
+        context["profile"] = self.request.user.profile
 
-
-@login_required()
-def create_post(request):
-    """Create post
-
-        Create a new post for the user
-    """
-    profile = request.user.profile
-
-    if request.method == 'POST':
-
-        form = PostForm(request.POST,request.FILES)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect('posts:feed')
-    else:
-        form = PostForm()
-
-    ctx = {
-        "user": request.user,
-        "profile": profile,
-        "form" : form,
-    }
-    return render(request,'posts/create_post.html',ctx)
+        return context
