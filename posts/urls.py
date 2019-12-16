@@ -9,6 +9,11 @@ from posts import views
 
 urlpatterns = [
     path(
+        route="detail-post/<slug:post>",
+        view=views.DetailPostView.as_view(),
+        name="detail"
+    ),
+    path(
         route='',
         view=views.ListPostsView.as_view(),
         name='feed'

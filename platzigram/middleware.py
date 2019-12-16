@@ -53,6 +53,9 @@ class ProfileCompletionMiddleware:
         response = self.get_response(request)
         return response
 
+
+
+
 class ActiveUserMiddleware:
     """Active user Middleware
 
