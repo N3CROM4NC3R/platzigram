@@ -22,7 +22,7 @@ urlpatterns = [
 
     path(
         route='register/',
-        view=views.register_view,
+        view=views.RegisterFormView.as_view(),
         name='register'
     ),
 

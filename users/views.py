@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views.generic import DetailView, UpdateView
-from django.urls import reverse
+from django.views.generic import DetailView, UpdateView, FormView
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 """ Local imports """
@@ -33,9 +33,14 @@ class UserDetailView(DetailView):
         context['posts_count'] = len(context['posts'])
         return context
 
-class UpdateProfileUpdateView(UpdateView):
-    pass
+class RegisterFormView(FormView):
+    success_url = reverse_lazy("users:login")
+    form_class = SignupForm
+    template_name = "users/register.html"
 
+    def form_valid(self,form):
+        form.save()
+        return super().form_valid(form)
 
 
 @login_required
@@ -53,7 +58,7 @@ def update_profile(request):
             profile.biography = data["biography"]
             profile.save()
 
-            url = reverse('users:detail',kwargs={'username':request.user.username})
+            url = reverse_lazy('users:detail',kwargs={'username':request.user.username})
             print(url)
             return redirect(url)
     else:
@@ -106,25 +111,3 @@ def logout_view(request):
     """ Logout View. """
     logout(request)
     return redirect('users:login')
-
-def register_view(request):
-    """ Register View. """
-
-    if request.method == "POST":
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            ctx = {
-                "form":form,
-                "message":"User created with successfull",
-            }
-            return render(request,"users/register.html",ctx)
-        else:
-            print(form.errors.as_data())
-
-    else:
-        form = SignupForm()
-    ctx = {
-        "form":form
-    }
-    return render(request,"users/register.html",ctx)
