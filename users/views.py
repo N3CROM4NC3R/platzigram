@@ -32,6 +32,7 @@ class UserDetailView(LoginRequiredMixin,DetailView):
         user = self.get_object()
         context['posts'] = Post.objects.filter(profile_id=user.profile).order_by('-created')
         context['posts_count'] = len(context['posts'])
+        context['following'] = Profile.objects.filter(profile_followers__id=user.profile.id).count()
         return context
 
 class RegisterFormView(FormView):
@@ -77,7 +78,14 @@ class UserLogoutView(LogoutView):
 
 
 @login_required()
-def logout_view(request):
-    """ Logout View. """
-    logout(request)
-    return redirect('users:login')
+def user_follow(request,profile_id):
+    profile = Profile.objects.filter(id=profile_id)
+
+    if profile and not request.user.profile == profile:
+        profile = Profile.objects.get(id=profile_id)
+        if not request.user.profile in profile.profile_followers.all():
+            profile.profile_followers.add(request.user.profile)
+        else:
+            profile.profile_followers.remove(request.user.profile)
+        profile.save()
+    return redirect("users:detail",username=profile.user.username)

@@ -35,4 +35,8 @@ urlpatterns = [
         view=views.ProfileUpdateView.as_view(),
         name='update_profile'
     ),
+    path(route='follow/<slug:profile_id>',
+        view=views.user_follow,
+        name='user_follow'
+    ),
 ]
