@@ -1,8 +1,9 @@
 """ Posts views """
 # Django
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.db import models
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 #Local
@@ -37,3 +38,20 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         context["profile"] = self.request.user.profile
 
         return context
+
+
+@login_required
+def PostLikeToggle(request,post_id):
+
+    post = Post.objects.filter(id=post_id)
+
+    if post:
+        post = Post.objects.get(id=post_id)
+        profile = Profile.objects.get(id=request.user.profile.id)
+        print(post.likes.count())
+        if not profile in post.likes.all():
+            post.likes.add(profile)
+        else:
+            post.likes.remove(profile)
+        post.save()
+    return redirect("posts:feed")

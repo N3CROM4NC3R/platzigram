@@ -4,15 +4,17 @@
             <div class="media pt-3 pl-3 pb-1">
                 <a href="{% url 'users:detail' post.profile.user.username %}"><img class="mr-3 rounded-circle" height="50" src="{{post.profile.picture.url}}" alt="{{post.user.name}}"></a>
                 <div class="media-body">
-                    <p style="margin-top:5px;font-size:2em;">#{{post.profile.user.get_full_name}}</p>
+                    <p style="margin-top:5px;font-size:2em;">#{{post.profile.user.usernam}}</p>
             </div>
             </div>
             <a href="{% url 'posts:detail' post.pk %}">
                 <img style="width:100%;"  src={{post.photo.url}} alt={{post.title}}>
             </a>
             <div class="col">
-                <button class="btn btn-light mt-2">
-                    <i class="fas fa-heart">{{ post.likes }} 42 Likes</i>
+                <button class="btn {% if not request.user.profile in post.likes.all%}btn-light{% else %}btn-dark{% endif %} mt-2">
+                    <a href="{% url 'posts:like' post.id %}">
+                    <i class="fas fa-heart">{% if post.likes.count %}{{ post.likes.count }}{% else %}0{% endif %}</i>
+                    </a>
                 </button>
             </div>
             <b>{{post.title}}</b> - <small>{{post.created}}</small>

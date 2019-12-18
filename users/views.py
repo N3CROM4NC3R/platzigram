@@ -73,7 +73,7 @@ class UserLoginView(LoginView):
 
 class UserLogoutView(LogoutView):
 
-    template_name = "users/logot.html"
+    template_name = "users/logout.html"
 
 
 @login_required()

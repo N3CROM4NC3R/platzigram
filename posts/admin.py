@@ -11,7 +11,7 @@ from posts.models import Post
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Post Admin"""
-    list_display = ['username','title','photo','created','modified']
+    list_display = ['pk','username','title','photo','created','modified']
     fieldsets = (
         ('Post',{
             'fields':(

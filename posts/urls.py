@@ -23,4 +23,9 @@ urlpatterns = [
         view=views.PostCreateView.as_view(),
         name='create_post'
     ),
+    path(
+        route='like/<slug:post_id>',
+        view=views.PostLikeToggle,
+        name='like'
+    )
 ]
