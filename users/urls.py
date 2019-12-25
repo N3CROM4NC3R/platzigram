@@ -31,11 +31,13 @@ urlpatterns = [
         view=views.UserLoginView.as_view(),
         name='login'
     ),
-    path(route='me/profile/',
+    path(
+        route='me/profile/',
         view=views.ProfileUpdateView.as_view(),
         name='update_profile'
     ),
-    path(route='follow/<slug:profile_id>',
+    path(
+        route='follow/<slug:profile_id>',
         view=views.user_follow,
         name='user_follow'
     ),
